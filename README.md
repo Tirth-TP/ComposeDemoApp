@@ -49,6 +49,8 @@ __
 
 ## 📦 Project Structure
 
+```
+
 app/
 ├── core.ui/
 ├── ui/
@@ -59,6 +61,9 @@ app/
 ├── network/ # API service & model classes
 ├── util/ # Extensions and utility functions
 ├── viewmodel/ # ViewModels for each feature
+
+
+````
 
 ---
 
