@@ -78,5 +78,9 @@ Make sure you're using Kotlin 2.0+ and Compose Compiler 1.5.11+
 
 Run the app on an emulator or device
 
-📝 License
+---
+
+## 📄 License
 This project is open-source and available under the [MIT License](./LICENSE).
+
+```
