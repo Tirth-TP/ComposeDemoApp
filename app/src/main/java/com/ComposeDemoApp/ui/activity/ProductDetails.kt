@@ -7,15 +7,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +37,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@ExperimentalMaterialApi
+
 @AndroidEntryPoint
 class ProductDetails : ComponentActivity() {
     private val homeViewModel: DemoViewModel by viewModels()
@@ -52,19 +61,16 @@ class ProductDetails : ComponentActivity() {
     }
 }
 
-@SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterialScaffoldPaddingParameter")
-@ExperimentalMaterialApi
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ProductDetailsCall(
-    viewModel: DemoViewModel = hiltViewModel()
+    viewModel: DemoViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
     val data = viewModel.productDetails.observeAsState().value
 
     Surface(
-        color = MaterialTheme.colors.background,
+        color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
     ) {
         var json = Gson().toJson(viewModel.productList.value)
@@ -72,14 +78,15 @@ fun ProductDetailsCall(
         Log.e("TAG", "PostListData: ViewModel $viewModel")
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            scaffoldState = scaffoldState
-        ) {
+            snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+        ) { padding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.LightGray)
+                    .padding(padding)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

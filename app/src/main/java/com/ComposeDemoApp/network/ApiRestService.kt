@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * Created by Jeetesh Surana.
+ * Created by Tirth Patel.
  */
 lateinit var okHttpBuilder: OkHttpClient.Builder
 

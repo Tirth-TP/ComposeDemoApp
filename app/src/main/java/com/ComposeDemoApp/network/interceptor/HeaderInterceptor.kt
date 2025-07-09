@@ -9,7 +9,7 @@ import okio.BufferedSource
 import java.net.HttpURLConnection.HTTP_CLIENT_TIMEOUT
 
 /**
- * Created by Jeetesh Surana.
+ * Created by Tirth Patel.
  */
 class HeaderInterceptor(
     private val deviceUtil: DeviceUtil,

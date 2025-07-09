@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 
 /**
- * Created by Jeetesh surana.
+ * Created by Tirth Patel.
  */
 
 /**
@@ -333,9 +333,6 @@ fun Activity.showKeyboard() {
 
 fun View.showKeyBoard() {
     requestFocus()
-    val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.toggleSoftInput(
-        InputMethodManager.HIDE_IMPLICIT_ONLY,
-        0
-    )
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }

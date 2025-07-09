@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 
 /**
- * Created by Jeetesh Surana.
+ * Created by Tirth Patel.
  */
 class PreferenceProvider(context: Context) {
     private val appContext = context.applicationContext

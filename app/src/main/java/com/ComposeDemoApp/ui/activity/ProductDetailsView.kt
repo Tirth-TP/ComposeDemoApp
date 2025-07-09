@@ -3,8 +3,10 @@ package com.ComposeDemoApp.ui.activity
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,12 +21,14 @@ import com.ComposeDemoApp.data.remote.model.response.Product.Product
 @Composable
 fun ProductDetailsView(product: Product) {
     Log.e("TAG", "ProductDetailsView: $product")
+    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.LightGray
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(backgroundColor)
     ) {
         Image(
             painter = rememberAsyncImagePainter(product.thumbnail),
@@ -42,7 +46,7 @@ fun ProductDetailsView(product: Product) {
                     .padding(10.dp)
                     .fillMaxSize()
             ) {
-                Text(
+            Text(
                     text = "ID : ${product.title}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,

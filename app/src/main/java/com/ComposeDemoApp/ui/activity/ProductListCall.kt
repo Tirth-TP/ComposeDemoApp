@@ -4,11 +4,15 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +27,11 @@ import coil.compose.rememberAsyncImagePainter
 import com.ComposeDemoApp.data.remote.model.response.Product.Product
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProductListCall(product: Product) {
     val context = LocalContext.current
     Card(
-        Modifier
+        modifier = Modifier
             .padding(5.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
@@ -45,14 +48,20 @@ fun ProductListCall(product: Product) {
                             .makeText(context, "LongClick", Toast.LENGTH_SHORT)
                             .show()
                     },
-                    onTap = { context.startActivities(arrayOf(Intent(context, ProductDetails::class.java).apply {
-                        putExtra("productId", product.id)
-                    })) }
-
-
+                    onTap = {
+                        context.startActivities(
+                            arrayOf(
+                                Intent(
+                                    context,
+                                     ProductDetails::class.java
+                                ).apply {
+                                    putExtra("productId", product.id)
+                                })
+                        )
+                    }
                 )
             },
-        elevation = 10.dp,
+        shape = RoundedCornerShape(10.dp),
     ) {
 
         Row(
@@ -60,7 +69,6 @@ fun ProductListCall(product: Product) {
                 .padding(10.dp)
                 .fillMaxWidth(),
         ) {
-
             Image(
                 painter = rememberAsyncImagePainter(product.thumbnail),
                 contentDescription = null,

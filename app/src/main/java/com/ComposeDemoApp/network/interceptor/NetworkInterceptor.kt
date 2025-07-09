@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * Created by Jeetesh surana
+ * Created by Tirth Patel
  */
 class NetworkInterceptor(context: Context) : Interceptor {
     private val appContext = context.applicationContext

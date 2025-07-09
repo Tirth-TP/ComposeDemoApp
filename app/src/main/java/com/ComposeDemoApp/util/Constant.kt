@@ -1,7 +1,7 @@
 package com.ComposeDemoApp.util
 
 /**
- * Created by Jeetesh surana.
+ * Created by Tirth Patel.
  */
 object Constant {
     const val KEY_DEVICE_ID = "DEVICE_ID"

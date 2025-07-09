@@ -10,7 +10,7 @@ import retrofit2.Response
 import java.net.HttpURLConnection
 
 /**
- * Created by Jeetesh Surana.
+ * Created by Tirth Patel.
  */
 
 abstract class SafeApiRequest(val context: Context) {

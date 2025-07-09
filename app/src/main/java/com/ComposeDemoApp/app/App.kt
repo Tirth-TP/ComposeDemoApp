@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 
 
 /**
- * Created by Sajid.
+ * Created by Tirth Patel.
  */
 @HiltAndroidApp
 class App : Application() {}
