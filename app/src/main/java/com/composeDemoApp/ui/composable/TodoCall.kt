@@ -1,4 +1,4 @@
-package com.composeDemoApp.ui.activity
+package com.composeDemoApp.ui.composable
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

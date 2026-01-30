@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.composeDemoApp.ui.activity.PhotosList
-import com.composeDemoApp.ui.activity.PostListData
-import com.composeDemoApp.ui.activity.ProductDetailsCall
-import com.composeDemoApp.ui.activity.ToDoList
+import com.composeDemoApp.ui.composable.PhotosList
+import com.composeDemoApp.ui.composable.PostListData
+import com.composeDemoApp.ui.composable.ProductDetailsCall
+import com.composeDemoApp.ui.composable.ToDoList
 import com.composeDemoApp.viewmodel.DemoViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument

@@ -1,4 +1,4 @@
-package com.composeDemoApp.ui.activity
+package com.composeDemoApp.ui.composable
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -25,9 +25,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.composeDemoApp.data.remote.model.response.Product.Product
 
+/**
+ * Created by Tirth Patel.
+ */
 
 @Composable
-fun ProductListCall(product: Product, onClick: (Int) -> Unit) {
+fun ItemProduct(product: Product, onClick: (Int) -> Unit) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
