@@ -1,9 +1,9 @@
 package com.composeDemoApp.repository
 
 import android.content.Context
-import com.composeDemoApp.data.remote.model.response.Photos.PhotosListResponceItem
-import com.composeDemoApp.data.remote.model.response.Product.Product
-import com.composeDemoApp.data.remote.model.response.Product.ProductListResponse
+import com.composeDemoApp.data.Photos.PhotosListResponseItem
+import com.composeDemoApp.data.Product.Product
+import com.composeDemoApp.data.Product.ProductListResponse
 import com.composeDemoApp.network.ApiRestService
 import com.composeDemoApp.network.SafeApiRequest
 import com.composeDemoApp.util.Resource
@@ -34,7 +34,7 @@ class DemoRepository @Inject constructor(
         return apiRequest { api.getProductsDetails(id) }
     }
 
-    suspend fun getPhotos(): List<PhotosListResponceItem> {
+    suspend fun getPhotos(): List<PhotosListResponseItem> {
         return apiRequest { api.getPhotos() }
     }
 }

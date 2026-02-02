@@ -1,4 +1,4 @@
-package com.composeDemoApp.data.remote.model.response.Product
+package com.composeDemoApp.data.Product
 
 
 data class ProductListResponse(

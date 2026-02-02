@@ -1,12 +1,12 @@
 package com.composeDemoApp.network
 
 import android.content.Context
-import com.composeDemoApp.data.remote.model.response.Photos.PhotosListResponceItem
-import com.composeDemoApp.data.remote.model.response.Product.Product
-import com.composeDemoApp.data.remote.model.response.Product.ProductListResponse
+import com.composeDemoApp.data.Photos.PhotosListResponseItem
+import com.composeDemoApp.data.Product.Product
+import com.composeDemoApp.data.Product.ProductListResponse
 import com.composeDemoApp.network.interceptor.HeaderInterceptor
 import com.composeDemoApp.network.interceptor.NetworkInterceptor
-import com.composeDemoApp.util.Constant.baseURL
+import com.composeDemoApp.util.Constant
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -27,17 +27,17 @@ lateinit var okHttpBuilder: OkHttpClient.Builder
 
 interface ApiRestService {
 
-    @GET("products")
+    @GET(Constant.PRODUCTS)
     suspend fun getWeather(): List<ProductListResponse>
 
-    @GET("https://dummyjson.com/products")
+    @GET(Constant.PRODUCTS)
     suspend fun getProducts(): Response<ProductListResponse>
 
-    @GET("products/{id}")
+    @GET("${Constant.PRODUCTS}/{id}")
     suspend fun getProductsDetails(@Path("id") id: String): Response<Product>
 
-    @GET("https://jsonplaceholder.typicode.com/photos")
-    suspend fun getPhotos(): Response<List<PhotosListResponceItem>>
+    @GET(Constant.PHOTOS_URL)
+    suspend fun getPhotos(): Response<List<PhotosListResponseItem>>
 
 
     companion object {
@@ -63,9 +63,9 @@ interface ApiRestService {
             }
 
             okHttpBuilder = OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.MINUTES)
-                .readTimeout(10, TimeUnit.MINUTES)
-                .writeTimeout(10, TimeUnit.MINUTES)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .cache(provideCache())
                 .addInterceptor(networkInterceptor)
                 .addInterceptor(logging)
@@ -73,7 +73,7 @@ interface ApiRestService {
 
 
             return Retrofit.Builder()
-                .baseUrl(baseURL)
+                .baseUrl(Constant.BASEURL)
                 .client(okHttpBuilder.build())
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())

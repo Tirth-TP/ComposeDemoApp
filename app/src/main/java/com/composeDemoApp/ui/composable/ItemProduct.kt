@@ -18,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.composeDemoApp.data.remote.model.response.Product.Product
+import com.composeDemoApp.R
+import com.composeDemoApp.data.Product.Product
 
 /**
  * Created by Tirth Patel.
@@ -32,6 +34,9 @@ import com.composeDemoApp.data.remote.model.response.Product.Product
 @Composable
 fun ItemProduct(product: Product, onClick: (Int) -> Unit) {
     val context = LocalContext.current
+    val doubleClickMsg = stringResource(R.string.msg_double_click)
+    val longClickMsg = stringResource(R.string.msg_long_click)
+
     Card(
         modifier = Modifier
             .padding(5.dp)
@@ -41,12 +46,12 @@ fun ItemProduct(product: Product, onClick: (Int) -> Unit) {
                 detectTapGestures(
                     onDoubleTap = {
                         Toast
-                            .makeText(context, "DoubleClick", Toast.LENGTH_SHORT)
+                            .makeText(context, doubleClickMsg, Toast.LENGTH_SHORT)
                             .show()
                     },
                     onLongPress = {
                         Toast
-                            .makeText(context, "LongClick", Toast.LENGTH_SHORT)
+                            .makeText(context, longClickMsg, Toast.LENGTH_SHORT)
                             .show()
                     },
                     onTap = {
@@ -83,7 +88,7 @@ fun ItemProduct(product: Product, onClick: (Int) -> Unit) {
                 Spacer(modifier = Modifier.padding(4.dp))
 
                 Text(
-                    text = "Title: ${product.brand}",
+                    text = product.brand ?: "xxx",
                     modifier = Modifier.fillMaxWidth(),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Normal,

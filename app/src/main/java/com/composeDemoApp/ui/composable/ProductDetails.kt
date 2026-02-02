@@ -1,103 +1,142 @@
 package com.composeDemoApp.ui.composable
 
-import android.annotation.SuppressLint
-import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.composeDemoApp.ui.theme.Purple500
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
+import com.composeDemoApp.R
+import com.composeDemoApp.data.Product.Product
 import com.composeDemoApp.viewmodel.DemoViewModel
-import com.google.gson.Gson
 
 
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ProductDetailsCall(
+fun ProductDetails(
     productId: String,
-    viewModel: DemoViewModel = hiltViewModel(),
+    viewModel: DemoViewModel = viewModel(),
+    onBackClick: () -> Unit,
 ) {
     LaunchedEffect(productId) {
         viewModel.getProductsDetails(productId)
     }
-    val snackBarHostState = remember { SnackbarHostState() }
     val data = viewModel.productDetails.observeAsState().value
+    val isLoading = viewModel.isLoading.observeAsState(false).value
 
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        var json = Gson().toJson(viewModel.productList.value)
-        Log.e("TAG", "PostListData: Gson $json")
-        Log.e("TAG", "PostListData: ViewModel $viewModel")
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            contentWindowInsets = WindowInsets.navigationBars,
-            snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
-        ) { padding ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.LightGray)
-                    .padding(padding)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Purple500)
-                        .statusBarsPadding()
-                        .padding(15.dp)
-                ) {
-                    Text(
-                        text = "Product Details",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.White
-                    )
-                }
+        CommonToolbar(
+            title = stringResource(R.string.product_details),
+            isBackVisible = true,
+            onBackClick = onBackClick
+        )
 
-                if (viewModel.isLoading.value == false) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-                if (viewModel.isLoading.value == true) {
-                    Log.e("TAG", "PostListData: before lazy column called")
-                    if (viewModel.productDetails.value != null) {
-                        ProductDetailsView(data!!)
-                    }
-                }
+
+        val error = viewModel.mError.observeAsState().value
+
+        if (isLoading) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (error != null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = error.message,
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+        } else {
+            data?.let {
+                ProductDetailsView(it)
+            }
+        }
+    }
+}
+
+@Composable
+fun ProductDetailsView(product: Product) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(product.thumbnail),
+            contentDescription = null,
+            modifier = Modifier
+                .size(250.dp)
+        )
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = stringResource(R.string.label_id) + " " + product.title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif
+                )
+
+                Text(
+                    text = stringResource(R.string.label_user_id) + " " + (product.brand ?: "xxx"),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif
+                )
+                Text(
+                    text = stringResource(R.string.label_title) + " " + product.category,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = FontFamily.SansSerif
+                )
+
+                Text(
+                    text = stringResource(R.string.label_body) + " " + product.description,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = FontFamily.SansSerif
+                )
             }
         }
     }

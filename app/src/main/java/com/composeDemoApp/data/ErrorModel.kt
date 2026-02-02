@@ -1,4 +1,4 @@
-package com.composeDemoApp.data.remote.model.response
+package com.composeDemoApp.data
 
 data class ErrorModel(
     var message: String = "",

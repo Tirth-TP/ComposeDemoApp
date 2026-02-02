@@ -1,36 +1,47 @@
 package com.composeDemoApp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import com.composeDemoApp.data.remote.model.response.ErrorModel
-import com.composeDemoApp.data.remote.model.response.Photos.PhotosListResponceItem
-import com.composeDemoApp.data.remote.model.response.Product.Product
-import com.composeDemoApp.data.remote.model.response.Product.ProductListResponse
+import com.composeDemoApp.data.ErrorModel
+import com.composeDemoApp.data.Photos.PhotosListResponseItem
+import com.composeDemoApp.data.Product.Product
+import com.composeDemoApp.data.Product.ProductListResponse
 import com.composeDemoApp.network.ApiException
 import com.composeDemoApp.repository.DemoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DemoViewModel @Inject constructor(
-    private val repository: DemoRepository
+    private val repository: DemoRepository,
 ) : ViewModel() {
-    val mError = MutableLiveData<ErrorModel>()
-    var productList = MutableLiveData<ProductListResponse>()
-    var productDetails = MutableLiveData<Product>()
-    var photosList = MutableLiveData<List<PhotosListResponceItem>>()
+    private val _mError = MutableLiveData<ErrorModel>()
+    val mError: LiveData<ErrorModel> = _mError
 
-    var isLoading = MutableLiveData(false)
+    private val _productList = MutableLiveData<ProductListResponse>()
+    val productList: LiveData<ProductListResponse> = _productList
+
+    private val _productDetails = MutableLiveData<Product>()
+    val productDetails: LiveData<Product> = _productDetails
+
+    private val _photosList = MutableLiveData<List<PhotosListResponseItem>>()
+    val photosList: LiveData<List<PhotosListResponseItem>> = _photosList
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getProducts() {
         viewModelScope.launch {
             try {
-                isLoading.postValue(true)
-                productList.postValue(repository.getProducts())
+                _isLoading.postValue(true)
+                _productList.postValue(repository.getProducts())
             } catch (e: ApiException) {
-                mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+                _mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+            } finally {
+                _isLoading.postValue(false)
             }
         }
     }
@@ -38,10 +49,12 @@ class DemoViewModel @Inject constructor(
     fun getProductsDetails(id: String) {
         viewModelScope.launch {
             try {
-                isLoading.postValue(true)
-                productDetails.postValue(repository.getProductsDetails(id))
+                _isLoading.postValue(true)
+                _productDetails.postValue(repository.getProductsDetails(id))
             } catch (e: ApiException) {
-                mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+                _mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+            } finally {
+                _isLoading.postValue(false)
             }
         }
     }
@@ -49,10 +62,12 @@ class DemoViewModel @Inject constructor(
     fun getPhotos() {
         viewModelScope.launch {
             try {
-                isLoading.postValue(true)
-                photosList.postValue(repository.getPhotos())
+                _isLoading.postValue(true)
+                _photosList.postValue(repository.getPhotos())
             } catch (e: ApiException) {
-                mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+                _mError.value = e.message?.let { ErrorModel(it, e.errno, e.code) }
+            } finally {
+                _isLoading.postValue(false)
             }
         }
     }

@@ -24,7 +24,7 @@ class HostSelectionInterceptor @Inject constructor(var context: Context) :
     @Volatile
     private var host = "".toHttpUrlOrNull()
     fun setHostBaseUrl() {
-        host = PreferenceProvider(context).getString("baseUrl", Constant.baseURL).toString()
+        host = PreferenceProvider(context).getString("baseUrl", Constant.BASEURL).toString()
             .toHttpUrlOrNull()
     }
 

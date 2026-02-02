@@ -1,6 +1,6 @@
-package com.composeDemoApp.data.remote.model.response.Photos
+package com.composeDemoApp.data.Photos
 
-data class PhotosListResponceItem(
+data class PhotosListResponseItem(
     val albumId: Int,
     val id: Int,
     val thumbnailUrl: String,

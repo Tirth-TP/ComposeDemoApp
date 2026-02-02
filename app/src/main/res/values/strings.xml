@@ -4,4 +4,22 @@
 
     <string name="permission_denied_by_system">Permission denied by system</string>
     <string name="permission_denied">Permission denied</string>
+
+    <string name="products_list">Products List</string>
+    <string name="product_details">Product Details</string>
+    <string name="gallery">Gallery</string>
+    <string name="todo">TODO</string>
+    <string name="under_development">Under development</string>
+    <string name="back">Back</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_todo">Todo</string>
+    <string name="label_id">ID : </string>
+    <string name="label_user_id">User ID : </string>
+    <string name="label_title">Title : </string>
+    <string name="label_body">Body : </string>
+
+    <string name="msg_double_click">DoubleClick</string>
+    <string name="msg_long_click">LongClick</string>
+    <string name="label_product_title">Title: </string>
 </resources>

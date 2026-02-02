@@ -3,17 +3,18 @@ package com.composeDemoApp.ui.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.composeDemoApp.ui.composable.PhotosList
-import com.composeDemoApp.ui.composable.PostListData
-import com.composeDemoApp.ui.composable.ProductDetailsCall
-import com.composeDemoApp.ui.composable.ToDoList
-import com.composeDemoApp.viewmodel.DemoViewModel
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.composeDemoApp.ui.composable.GalleryScreen
+import com.composeDemoApp.ui.composable.ProductDetails
+import com.composeDemoApp.ui.composable.ProductList
+import com.composeDemoApp.ui.composable.ToDoScreen
+import com.composeDemoApp.viewmodel.DemoViewModel
 
 /**
  * Created by Tirth Patel.
@@ -23,7 +24,8 @@ import androidx.navigation.navArgument
 fun NavController(
     navController: NavHostController,
     padding: PaddingValues,
-    homeViewModel: DemoViewModel
+    homeViewModel: DemoViewModel,
+    onBottomBarVisibilityChanged: (Boolean) -> Unit,
 ) {
 
     NavHost(
@@ -39,19 +41,28 @@ fun NavController(
 
             // route : Home
             composable("home") {
-                PostListData(homeViewModel) { productId ->
+                LaunchedEffect(Unit) {
+                    onBottomBarVisibilityChanged(true)
+                }
+                ProductList(homeViewModel) { productId ->
                     navController.navigate("details/$productId")
                 }
             }
 
-            // route : search
+            // route : gallery
             composable("gallery") {
-                 PhotosList(homeViewModel)
+                LaunchedEffect(Unit) {
+                    onBottomBarVisibilityChanged(true)
+                }
+                GalleryScreen(homeViewModel)
             }
 
-            // route : profile
+            // route : todos
             composable("todo") {
-                ToDoList()
+                LaunchedEffect(Unit) {
+                    onBottomBarVisibilityChanged(true)
+                }
+                ToDoScreen()
 
             }
 
@@ -59,8 +70,19 @@ fun NavController(
                 "details/{productId}",
                 arguments = listOf(navArgument("productId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val productId = backStackEntry.arguments?.getString("productId") ?: return@composable
-                ProductDetailsCall(productId = productId)
+                LaunchedEffect(Unit) {
+                    onBottomBarVisibilityChanged(false)
+                }
+                val productId =
+                    backStackEntry.arguments?.getString("productId") ?: return@composable
+                ProductDetails(
+                    productId = productId,
+                    viewModel = homeViewModel,
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
             }
-        })
+        }
+    )
 }

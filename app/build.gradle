@@ -1,7 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id 'kotlin-kapt'
+    alias(libs.plugins.ksp)
     alias(libs.plugins.dagger.hilt.android)
     id 'kotlin-parcelize'
     alias(libs.plugins.kotlin.compose)
@@ -9,7 +11,7 @@ plugins {
 
 android {
     namespace 'com.composeDemoApp'
-    compileSdk 36
+    compileSdk = 36
 
     defaultConfig {
         applicationId "com.composeDemoApp"
@@ -33,11 +35,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     packagingOptions {
@@ -45,14 +49,12 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    kapt {
-        correctErrorTypes true
-    }
 }
 
 dependencies {
     implementation platform(libs.androidx.compose.bom)
     implementation libs.androidx.core.ktx
+    implementation libs.androidx.core.splashscreen
     implementation libs.androidx.ui
     implementation libs.androidx.material3
     implementation libs.androidx.ui.tooling.preview
@@ -70,7 +72,7 @@ dependencies {
 
     //Hilt
     implementation libs.hilt.android
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
     implementation libs.androidx.hilt.navigation.compose
 
 
@@ -100,4 +102,5 @@ dependencies {
     implementation libs.coil.compose
 
     implementation libs.androidx.animation
+    implementation libs.androidx.material.icons.extended
 }

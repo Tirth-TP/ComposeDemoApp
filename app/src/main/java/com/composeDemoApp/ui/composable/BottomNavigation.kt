@@ -1,17 +1,17 @@
 package com.composeDemoApp.ui.composable
 
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.composeDemoApp.ui.navigation.BottomNavItem
 
 /**
@@ -19,30 +19,41 @@ import com.composeDemoApp.ui.navigation.BottomNavItem
  */
 
 @Composable
-fun BottomNavigation(navController: NavController) {
-    val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Gallery,
-        BottomNavItem.Todo
-    )
+fun BottomNavigation(navController: NavController, currentRoute: String?) {
+    val items = remember {
+        listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Gallery,
+            BottomNavItem.Todo
+        )
+    }
     NavigationBar(
-        containerColor = colorScheme.primaryContainer,
-        contentColor = colorScheme.onPrimaryContainer
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.primary
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
+            val isSelected = currentRoute == item.screenRoute
+            val targetColor =
+                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = 0.6f
+                )
+
             NavigationBarItem(
                 icon = {
                     Icon(
                         painter = painterResource(id = item.icon),
-                        contentDescription = item.title
+                        contentDescription = stringResource(id = item.titleResId),
+                        tint = targetColor
                     )
                 },
                 label = {
-                    Text(text = item.title, fontSize = 9.sp)
+                    Text(
+                        text = stringResource(id = item.titleResId),
+                        fontSize = 9.sp,
+                        color = targetColor
+                    )
                 },
-                selected = currentRoute == item.screenRoute,
+                selected = isSelected,
                 onClick = {
                     navController.navigate(item.screenRoute) {
                         navController.graph.startDestinationRoute?.let { route ->
@@ -53,8 +64,9 @@ fun BottomNavigation(navController: NavController) {
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = colorScheme.primary,
-                    unselectedIconColor = colorScheme.onSurface.copy(alpha = 0.4f)
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    indicatorColor = MaterialTheme.colorScheme.surface
                 )
             )
         }

@@ -2,8 +2,8 @@ package com.composeDemoApp.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 
 /**
  * Created by Tirth Patel.
@@ -35,7 +35,7 @@ class PreferenceProvider(context: Context) {
         return preference.getBoolean(key, false)
     }
 
-    fun getBoolean(key: String,defaultValue:Boolean): Boolean {
+    fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return preference.getBoolean(key, defaultValue)
     }
 

@@ -1,7 +1,7 @@
-package com.composeDemoApp.data.remote.model.response.Product
+package com.composeDemoApp.data.Product
 
 data class Product(
-    val brand: String,
+    val brand: String?,
     val category: String,
     val description: String,
     val discountPercentage: Double,
