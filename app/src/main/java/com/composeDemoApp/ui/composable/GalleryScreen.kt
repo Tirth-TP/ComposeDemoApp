@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -72,7 +73,10 @@ fun GalleryScreen(
                         bottom = 16.dp
                     )
                 ) {
-                    items(data.size) { index ->
+                    items(
+                        items = data,
+                        key = { it.id }
+                    ) { photo ->
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
@@ -86,7 +90,7 @@ fun GalleryScreen(
                         ) {
                             Image(
                                 painter = rememberAsyncImagePainter(
-                                    data[index].thumbnailUrl
+                                    photo.thumbnailUrl
                                 ),
                                 contentDescription = null,
                                 modifier = Modifier

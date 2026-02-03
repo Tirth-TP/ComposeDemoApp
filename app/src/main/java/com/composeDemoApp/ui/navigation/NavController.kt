@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -44,9 +45,10 @@ fun NavController(
                 LaunchedEffect(Unit) {
                     onBottomBarVisibilityChanged(true)
                 }
-                ProductList(homeViewModel) { productId ->
-                    navController.navigate("details/$productId")
+                val onProductClick = remember(navController) {
+                    { productId: Int -> navController.navigate("details/$productId") }
                 }
+                ProductList(homeViewModel, onProductClick = onProductClick)
             }
 
             // route : gallery
@@ -75,12 +77,16 @@ fun NavController(
                 }
                 val productId =
                     backStackEntry.arguments?.getString("productId") ?: return@composable
+                val onBackClick = remember(navController) {
+                    {
+                        navController.popBackStack()
+                        Unit
+                    }
+                }
                 ProductDetails(
                     productId = productId,
                     viewModel = homeViewModel,
-                    onBackClick = {
-                        navController.popBackStack()
-                    }
+                    onBackClick = onBackClick
                 )
             }
         }
